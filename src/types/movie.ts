@@ -15,6 +15,18 @@ export interface MovieItem {
   director?: string | null;
   casts?: string | null;
   year: string | number;
+  thumb_url_webp?: string;
+  poster_url_webp?: string;
+  imdb?: {
+    id: string | null;
+    url: string | null;
+  };
+  tmdb?: {
+    id: number | null;
+    type: string | null;
+    season: number | null;
+    url: string | null;
+  };
 }
 
 export interface PaginateInfo {

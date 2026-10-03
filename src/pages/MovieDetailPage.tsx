@@ -129,16 +129,17 @@ export function MovieDetailPage() {
   return (
     <div className="pb-20 space-y-12">
       {/* Top Hero Backdrop */}
-      <div className="relative w-full min-h-[460px] md:min-h-[520px] bg-zinc-950 overflow-hidden pt-20">
+      <div className="relative w-full min-h-[460px] md:min-h-[520px] bg-black overflow-hidden pt-12 md:pt-16">
         {/* Backdrop image */}
         <div className="absolute inset-0">
           <img
-            src={movie.poster_url || movie.thumb_url}
+            src={movie.thumb_url || movie.poster_url}
             alt={movie.name}
-            className="w-full h-full object-cover object-center filter blur-xl scale-110 opacity-30"
+            style={{ objectPosition: 'center top' }}
+            className="w-full h-full object-cover filter brightness-[0.7] contrast-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b0c0f] via-[#0b0c0f]/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0b0c0f] via-[#0b0c0f]/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent w-full md:w-3/4" />
         </div>
 
         {/* Content Details Header */}
@@ -239,10 +240,10 @@ export function MovieDetailPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-4">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3.5 pt-4">
                 <Link
                   to={watchUrl}
-                  className="inline-flex items-center gap-2.5 px-7 py-3 rounded-xl font-bold text-sm sm:text-base bg-rose-600 hover:bg-rose-500 text-white shadow-xl shadow-rose-600/40 transition-all hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-2.5 px-8 py-3 rounded-full font-bold text-sm sm:text-base bg-[#e50914] hover:bg-red-700 text-white shadow-xl shadow-red-600/40 transition-all hover:scale-105 active:scale-95"
                 >
                   <Play className="w-5 h-5 fill-white" />
                   Xem Phim
@@ -250,9 +251,9 @@ export function MovieDetailPage() {
 
                 <button
                   onClick={() => toggleFavorite(movie)}
-                  className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm border transition-all ${
+                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border transition-all ${
                     isFav
-                      ? 'bg-rose-600 border-rose-500 text-white shadow-lg shadow-rose-600/40'
+                      ? 'bg-[#e50914] border-red-500 text-white shadow-lg shadow-red-600/40'
                       : 'bg-zinc-900 border-zinc-800 text-zinc-200 hover:bg-zinc-800 hover:text-white'
                   }`}
                 >

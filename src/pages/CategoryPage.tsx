@@ -155,7 +155,7 @@ export function CategoryPage() {
                 to={`/the-loai/${g.slug}`}
                 className={`px-3 py-1 text-xs font-semibold rounded-lg flex-shrink-0 transition-colors border ${
                   slug === g.slug
-                    ? 'bg-rose-600 text-white border-rose-500'
+                    ? 'bg-[#e50914] text-white border-red-500'
                     : 'bg-zinc-900 text-zinc-400 hover:text-white border-zinc-800'
                 }`}
               >
@@ -174,7 +174,7 @@ export function CategoryPage() {
                 to={`/quoc-gia/${c.slug}`}
                 className={`px-3 py-1 text-xs font-semibold rounded-lg flex-shrink-0 transition-colors border ${
                   slug === c.slug
-                    ? 'bg-rose-600 text-white border-rose-500'
+                    ? 'bg-[#e50914] text-white border-red-500'
                     : 'bg-zinc-900 text-zinc-400 hover:text-white border-zinc-800'
                 }`}
               >
@@ -193,7 +193,7 @@ export function CategoryPage() {
                 to={`/nam-phat-hanh/${y}`}
                 className={`px-3 py-1 text-xs font-semibold rounded-lg flex-shrink-0 transition-colors border ${
                   year === y.toString()
-                    ? 'bg-rose-600 text-white border-rose-500'
+                    ? 'bg-[#e50914] text-white border-red-500'
                     : 'bg-zinc-900 text-zinc-400 hover:text-white border-zinc-800'
                 }`}
               >

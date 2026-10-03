@@ -155,7 +155,7 @@ export function EpisodeList({
               onClick={() => onSelectEpisode(currentServerIndex, ep)}
               className={`py-2 px-1 text-center rounded-lg text-xs font-semibold transition-all border flex items-center justify-center gap-1 ${
                 isActive
-                  ? 'bg-rose-600 text-white border-rose-500 shadow-md shadow-rose-600/30 scale-105'
+                  ? 'bg-[#e50914] text-white border-red-500 shadow-md shadow-red-600/40 scale-105'
                   : 'bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white border-zinc-700/50'
               }`}
               title={`Tập ${ep.name}`}
