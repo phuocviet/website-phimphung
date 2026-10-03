@@ -1,19 +1,34 @@
-import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { MovieItem } from '../../types/movie';
 import { MovieCard } from './MovieCard';
 
 interface MovieSliderProps {
   title: string;
   subtitle?: string;
-  movies: MovieItem[];
   viewAllLink?: string;
   icon?: React.ReactNode;
+  movies: MovieItem[];
 }
 
-export function MovieSlider({ title, subtitle, movies, viewAllLink, icon }: MovieSliderProps) {
+export function MovieSlider({ title, movies }: MovieSliderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 20);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [movies]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -22,69 +37,58 @@ export function MovieSlider({ title, subtitle, movies, viewAllLink, icon }: Movi
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth',
       });
+      setTimeout(checkScroll, 350);
     }
   };
 
   if (!movies || movies.length === 0) return null;
 
   return (
-    <section className="space-y-4 relative group/slider">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          {icon && <span className="text-rose-500">{icon}</span>}
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              {title}
-            </h2>
-            {subtitle && <p className="text-xs text-zinc-400 mt-0.5">{subtitle}</p>}
-          </div>
-        </div>
+    <section className="relative group/slider select-none">
+      {/* Title */}
+      <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-3 sm:mb-4">
+        {title}
+      </h2>
 
-        <div className="flex items-center gap-2">
-          {viewAllLink && (
-            <Link
-              to={viewAllLink}
-              className="text-xs sm:text-sm font-semibold text-rose-500 hover:text-rose-400 flex items-center gap-1 transition-colors px-2 py-1 rounded-lg hover:bg-rose-500/10"
-            >
-              Xem tất cả
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          )}
-
-          {/* Slider Buttons */}
-          <div className="hidden sm:flex items-center gap-1 ml-2">
-            <button
-              onClick={() => scroll('left')}
-              aria-label="Cuộn trái"
-              className="p-1.5 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors border border-zinc-700/50"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              aria-label="Cuộn phải"
-              className="p-1.5 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors border border-zinc-700/50"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Horizontal Carousel */}
-      <div
-        ref={scrollRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scroll-smooth snap-x snap-mandatory"
-      >
-        {movies.map((movie) => (
-          <div
-            key={movie.slug}
-            className="flex-shrink-0 w-[145px] sm:w-[175px] md:w-[200px] snap-start"
+      {/* Relative container for cards & overlay buttons */}
+      <div className="relative">
+        {/* Left Scroll Button */}
+        {canScrollLeft && (
+          <button
+            onClick={() => scroll('left')}
+            aria-label="Cuộn sang trái"
+            className="absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-black flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:bg-zinc-200 transition-all hover:scale-110 active:scale-95 z-30 cursor-pointer"
           >
-            <MovieCard movie={movie} />
-          </div>
-        ))}
+            <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
+          </button>
+        )}
+
+        {/* Right Scroll Button (White circular button exactly like the screenshot) */}
+        {canScrollRight && (
+          <button
+            onClick={() => scroll('right')}
+            aria-label="Cuộn sang phải"
+            className="absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-black flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:bg-zinc-200 transition-all hover:scale-110 active:scale-95 z-30 cursor-pointer"
+          >
+            <ChevronRight className="w-6 h-6 stroke-[2.5]" />
+          </button>
+        )}
+
+        {/* Horizontal Card Row */}
+        <div
+          ref={scrollRef}
+          onScroll={checkScroll}
+          className="flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth py-1 px-1 -mx-1"
+        >
+          {movies.map((movie) => (
+            <div
+              key={movie.slug}
+              className="flex-shrink-0 w-[135px] sm:w-[165px] md:w-[190px] lg:w-[205px]"
+            >
+              <MovieCard movie={movie} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

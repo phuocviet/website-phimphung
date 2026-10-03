@@ -90,7 +90,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             onClick={() => handlePageClick(page)}
             className={`min-w-[38px] h-[38px] px-3 text-sm font-semibold rounded-lg transition-all ${
               isCurrent
-                ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/40 border border-rose-500'
+                ? 'bg-[#e50914] text-white shadow-lg shadow-red-600/40 border border-red-500'
                 : 'bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-zinc-800 hover:text-white'
             }`}
           >

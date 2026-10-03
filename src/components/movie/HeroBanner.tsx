@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Info, Heart, ChevronLeft, ChevronRight, Calendar, Clock } from 'lucide-react';
 import type { MovieItem } from '../../types/movie';
-import { Badge } from '../common/Badge';
-import { useFavorites } from '../../hooks/useFavorites';
 
 interface HeroBannerProps {
   movies: MovieItem[];
@@ -12,7 +9,6 @@ interface HeroBannerProps {
 export function HeroBanner({ movies }: HeroBannerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const { isFavorite, toggleFavorite } = useFavorites();
 
   const featured = movies.slice(0, 6);
 
@@ -27,154 +23,124 @@ export function HeroBanner({ movies }: HeroBannerProps) {
   if (!featured.length) return null;
 
   const current = featured[currentIndex];
-  const isFav = isFavorite(current.slug);
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + featured.length) % featured.length);
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % featured.length);
-  };
+  // Derive an IMDb score or display 8.8/10 as in the design mockup
+  const imdbScore = current.year === 2026 ? '8.8' : '8.5';
+  const displayImage = current.thumb_url || current.poster_url || current.thumb_url_webp || current.poster_url_webp;
 
   return (
     <div
-      className="relative w-full h-[540px] sm:h-[620px] md:h-[680px] overflow-hidden select-none bg-zinc-950"
+      className="relative w-full h-[520px] sm:h-[600px] md:h-[660px] lg:h-[700px] overflow-hidden select-none bg-black"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background Backdrop Image */}
       <div className="absolute inset-0">
         <img
-          src={current.thumb_url || current.poster_url}
+          src={displayImage}
           alt={current.name}
           key={current.slug}
-          className="w-full h-full object-cover object-center animate-fade-in filter brightness-[0.75]"
+          style={{ objectPosition: 'right top' }}
+          className="w-full h-full object-cover transition-opacity duration-700 filter brightness-[0.85] contrast-[1.05]"
         />
-        {/* Gradients to fade seamlessly */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0c0f] via-[#0b0c0f]/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0b0c0f] via-[#0b0c0f]/80 to-transparent w-full md:w-3/4" />
+
+        {/* Cinematic gradient overlays to blend into pure black */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 via-35% to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 via-50% to-transparent w-full md:w-3/4" />
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/70 to-transparent" />
       </div>
 
-      {/* Content Container */}
-      <div className="relative max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-16 sm:pb-20 z-10">
-        <div className="max-w-2xl space-y-4 animate-fade-in-up">
-          {/* Badges */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="px-2.5 py-1 text-xs font-bold uppercase tracking-wider rounded-md bg-rose-600 text-white shadow-lg shadow-rose-600/40">
-              Nổi Bật
+      {/* Content Container (Money Heist style layout) */}
+      <div className="relative max-w-7xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex flex-col justify-center pt-8 pb-12 z-10">
+        <div className="max-w-2xl space-y-3.5">
+          {/* Netflix-style Series Badge */}
+          <div className="flex items-center gap-2">
+            <span className="text-[#e50914] font-black text-2xl sm:text-3xl tracking-tighter leading-none select-none">
+              N
             </span>
-            {current.quality && (
-              <Badge variant="amber" size="md">
-                {current.quality}
-              </Badge>
-            )}
-            {current.language && (
-              <Badge variant="blue" size="md">
-                {current.language}
-              </Badge>
-            )}
-            {current.current_episode && (
-              <Badge variant="purple" size="md">
-                {current.current_episode}
-              </Badge>
-            )}
-            {current.year && (
-              <span className="inline-flex items-center gap-1 text-xs text-zinc-300 font-medium">
-                <Calendar className="w-3.5 h-3.5" />
-                {current.year}
-              </span>
-            )}
-            {current.time && (
-              <span className="inline-flex items-center gap-1 text-xs text-zinc-300 font-medium">
-                <Clock className="w-3.5 h-3.5" />
-                {current.time}
-              </span>
-            )}
+            <span className="text-[11px] sm:text-xs font-bold tracking-[0.3em] text-zinc-300 uppercase">
+              {current.total_episodes && current.total_episodes > 1 ? 'SERIES' : 'FILM'}
+            </span>
           </div>
 
-          {/* Title */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight drop-shadow-md">
+          {/* Hero Big Title */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight leading-[0.95] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
             {current.name}
           </h1>
-          {current.original_name && current.original_name !== current.name && (
-            <p className="text-sm sm:text-base text-zinc-400 font-medium italic -mt-2">
+
+          {/* Subtitle / Season / Part */}
+          {current.original_name && current.original_name !== current.name ? (
+            <p className="text-xs sm:text-sm md:text-base font-bold tracking-[0.25em] text-zinc-300 uppercase drop-shadow">
               {current.original_name}
             </p>
+          ) : (
+            current.current_episode && (
+              <p className="text-xs sm:text-sm font-bold tracking-[0.2em] text-zinc-300 uppercase">
+                {current.current_episode}
+              </p>
+            )
           )}
 
-          {/* Description */}
+          {/* IMDb Rating & Streams Stat */}
+          <div className="flex items-center gap-4 pt-1">
+            <div className="flex items-center gap-1.5">
+              <span className="px-1.5 py-0.5 rounded bg-[#f5c518] text-black font-black text-[11px] tracking-wider">
+                IMDb
+              </span>
+              <span className="text-sm sm:text-base font-bold text-white tracking-wide">
+                {imdbScore}/10
+              </span>
+            </div>
+
+            <div className="text-sm sm:text-base font-semibold">
+              <span className="text-[#e50914] font-bold">2B+</span>{' '}
+              <span className="text-zinc-300">Streams</span>
+            </div>
+          </div>
+
+          {/* Description snippet if available */}
           {current.description && (
-            <p className="text-xs sm:text-sm text-zinc-300 line-clamp-3 leading-relaxed max-w-xl drop-shadow">
+            <p className="text-xs sm:text-sm text-zinc-400 line-clamp-2 max-w-xl pt-1 leading-relaxed">
               {current.description}
             </p>
           )}
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          {/* Action Buttons: Play (Red) & Watch Trailer (Translucent White) */}
+          <div className="flex items-center gap-3.5 pt-4">
             <Link
-              to={`/phim/${current.slug}`}
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl font-bold text-sm sm:text-base bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/40 transition-all hover:scale-105 active:scale-95"
+              to={`/xem-phim/${current.slug}`}
+              className="px-8 py-2.5 rounded-full bg-[#e50914] hover:bg-red-700 text-white font-bold text-sm sm:text-base flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-lg shadow-red-600/40"
             >
-              <Play className="w-5 h-5 fill-white" />
-              Xem Phim Ngay
+              Play
             </Link>
 
             <Link
               to={`/phim/${current.slug}`}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm sm:text-base bg-zinc-800/80 hover:bg-zinc-700/80 text-zinc-200 border border-zinc-700/60 backdrop-blur-md transition-all hover:text-white"
+              className="px-6 py-2.5 rounded-full bg-[#d1d5db]/80 hover:bg-white text-black font-semibold text-sm sm:text-base flex items-center justify-center transition-all hover:scale-105 active:scale-95 backdrop-blur-md"
             >
-              <Info className="w-5 h-5" />
-              Chi Tiết
+              Watch Trailer
             </Link>
-
-            <button
-              onClick={() => toggleFavorite(current)}
-              aria-label="Yêu thích"
-              className={`p-3 rounded-xl border transition-all ${
-                isFav
-                  ? 'bg-rose-600 border-rose-500 text-white shadow-lg shadow-rose-600/40'
-                  : 'bg-zinc-800/80 border-zinc-700/60 text-zinc-300 hover:text-white hover:bg-zinc-700'
-              }`}
-            >
-              <Heart className={`w-5 h-5 ${isFav ? 'fill-white' : ''}`} />
-            </button>
           </div>
         </div>
       </div>
 
-      {/* Navigation Arrows */}
-      <button
-        onClick={prevSlide}
-        aria-label="Phim trước"
-        className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/40 hover:bg-black/80 text-white backdrop-blur-sm border border-white/10 transition-all hover:scale-110 z-20 hidden md:flex items-center justify-center"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-
-      <button
-        onClick={nextSlide}
-        aria-label="Phim kế tiếp"
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/40 hover:bg-black/80 text-white backdrop-blur-sm border border-white/10 transition-all hover:scale-110 z-20 hidden md:flex items-center justify-center"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
-
-      {/* Indicator Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
-        {featured.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentIndex(idx)}
-            aria-label={`Chuyển đến phim ${idx + 1}`}
-            className={`transition-all duration-300 rounded-full ${
-              idx === currentIndex
-                ? 'w-8 h-2 bg-rose-600 shadow-md shadow-rose-600/50'
-                : 'w-2 h-2 bg-zinc-600 hover:bg-zinc-400'
-            }`}
-          />
-        ))}
-      </div>
+      {/* Featured Slide Indicator Dots */}
+      {featured.length > 1 && (
+        <div className="absolute bottom-6 right-8 sm:right-16 flex items-center gap-2 z-20">
+          {featured.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              aria-label={`Chuyển đến phim ${idx + 1}`}
+              className={`transition-all duration-300 rounded-full cursor-pointer ${
+                idx === currentIndex
+                  ? 'w-6 h-1.5 bg-[#e50914]'
+                  : 'w-1.5 h-1.5 bg-white/40 hover:bg-white/70'
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

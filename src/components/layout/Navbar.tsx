@@ -65,25 +65,25 @@ export function Navbar() {
   return (
     <header
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 sm:left-16 md:left-20 right-0 z-30 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#0b0c0f]/90 backdrop-blur-md shadow-lg shadow-black/50 border-b border-zinc-800/80 py-3'
-          : 'bg-gradient-to-b from-[#0b0c0f]/95 via-[#0b0c0f]/60 to-transparent py-4'
+          ? 'bg-black/90 backdrop-blur-md shadow-lg shadow-black/80 border-b border-white/5 py-3'
+          : 'bg-gradient-to-b from-black/95 via-black/60 to-transparent py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-600 via-rose-500 to-amber-500 flex items-center justify-center shadow-lg shadow-rose-600/30 group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-[#e50914] flex items-center justify-center shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
               <Film className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1">
-                <span className="text-2xl font-black tracking-tight text-white group-hover:text-rose-400 transition-colors">
-                  ph<span className="text-rose-500">ê</span>m
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-zinc-200 transition-colors">
+                  ph<span className="text-[#e50914]">ê</span>m
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-600/20 text-rose-400 border border-rose-500/30 uppercase tracking-widest hidden sm:inline-block">
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-600/20 text-[#e50914] border border-red-500/30 uppercase tracking-widest hidden sm:inline-block">
                   HD
                 </span>
               </div>
@@ -95,7 +95,7 @@ export function Navbar() {
             <Link
               to="/"
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
-                location.pathname === '/' ? 'text-rose-500 bg-rose-500/10' : 'text-zinc-300 hover:text-white'
+                location.pathname === '/' ? 'text-[#e50914] bg-rose-500/10' : 'text-zinc-300 hover:text-white'
               }`}
             >
               Trang Chủ
@@ -105,7 +105,7 @@ export function Navbar() {
               to="/danh-sach/phim-le"
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                 location.pathname === '/danh-sach/phim-le'
-                  ? 'text-rose-500 bg-rose-500/10'
+                  ? 'text-[#e50914] bg-rose-500/10'
                   : 'text-zinc-300 hover:text-white'
               }`}
             >
@@ -116,7 +116,7 @@ export function Navbar() {
               to="/danh-sach/phim-bo"
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                 location.pathname === '/danh-sach/phim-bo'
-                  ? 'text-rose-500 bg-rose-500/10'
+                  ? 'text-[#e50914] bg-rose-500/10'
                   : 'text-zinc-300 hover:text-white'
               }`}
             >
@@ -127,7 +127,7 @@ export function Navbar() {
               to="/danh-sach/dang-chieu"
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                 location.pathname === '/danh-sach/dang-chieu'
-                  ? 'text-rose-500 bg-rose-500/10'
+                  ? 'text-[#e50914] bg-rose-500/10'
                   : 'text-zinc-300 hover:text-white'
               }`}
             >
@@ -138,7 +138,7 @@ export function Navbar() {
               to="/danh-sach/tv-shows"
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                 location.pathname === '/danh-sach/tv-shows'
-                  ? 'text-rose-500 bg-rose-500/10'
+                  ? 'text-[#e50914] bg-rose-500/10'
                   : 'text-zinc-300 hover:text-white'
               }`}
             >
@@ -151,7 +151,7 @@ export function Navbar() {
                 onClick={() => toggleDropdown('genre')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                   activeDropdown === 'genre' || location.pathname.startsWith('/the-loai')
-                    ? 'text-rose-500 bg-rose-500/10'
+                    ? 'text-[#e50914] bg-rose-500/10'
                     : 'text-zinc-300 hover:text-white'
                 }`}
               >
@@ -180,7 +180,7 @@ export function Navbar() {
                 onClick={() => toggleDropdown('country')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                   activeDropdown === 'country' || location.pathname.startsWith('/quoc-gia')
-                    ? 'text-rose-500 bg-rose-500/10'
+                    ? 'text-[#e50914] bg-rose-500/10'
                     : 'text-zinc-300 hover:text-white'
                 }`}
               >
@@ -209,7 +209,7 @@ export function Navbar() {
                 onClick={() => toggleDropdown('year')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
                   activeDropdown === 'year' || location.pathname.startsWith('/nam-phat-hanh')
-                    ? 'text-rose-500 bg-rose-500/10'
+                    ? 'text-[#e50914] bg-rose-500/10'
                     : 'text-zinc-300 hover:text-white'
                 }`}
               >
@@ -260,7 +260,7 @@ export function Navbar() {
             <Link
               to="/yeu-thich"
               title="Phim yêu thích"
-              className="relative p-2 sm:p-2.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-rose-500 transition-colors"
+              className="relative p-2 sm:p-2.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-[#e50914] transition-colors"
             >
               <Heart className="w-4 h-4" />
               {favorites.length > 0 && (
@@ -274,7 +274,7 @@ export function Navbar() {
             <Link
               to="/lich-su"
               title="Lịch sử xem phim"
-              className="p-2 sm:p-2.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-rose-500 transition-colors"
+              className="p-2 sm:p-2.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-[#e50914] transition-colors"
             >
               <History className="w-4 h-4" />
             </Link>
