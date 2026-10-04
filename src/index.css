@@ -36,3 +36,22 @@
   scrollbar-width: none;
 }
 
+/* Drifting bubbles (watching activity) */
+@keyframes bubbles-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes bubble-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+.bubbles-track {
+  animation: bubbles-drift linear infinite;
+}
+.bubble {
+  animation: bubble-bob 4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bubbles-track, .bubble { animation: none; }
+}
+
