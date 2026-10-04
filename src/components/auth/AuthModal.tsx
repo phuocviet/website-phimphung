@@ -40,7 +40,7 @@ export function AuthModal() {
         <button
           onClick={closeAuthModal}
           aria-label="Đóng"
-          className="absolute top-3 right-3 p-1.5 text-zinc-500 hover:text-white"
+          className="absolute top-3 right-3 p-1.5 text-zinc-500 hover:text-white cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -48,7 +48,7 @@ export function AuthModal() {
         <h2 className="text-lg font-bold text-white">
           {mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản'}
         </h2>
-        <p className="text-xs text-zinc-500">Đăng nhập để lưu phim và xem lại ở mục "Phim Phước Xem".</p>
+        <p className="text-xs text-zinc-500">Đăng nhập để lưu phim và xem lại ở mục "Phim bạn xem".</p>
 
         {!isSupabaseConfigured && (
           <p className="text-xs text-amber-400">
@@ -75,7 +75,7 @@ export function AuthModal() {
                         key={a.id}
                         type="button"
                         onClick={() => setSelectedAvatar(a.id)}
-                        className={`flex-shrink-0 w-11 h-11 p-1 rounded-xl border transition-all ${
+                        className={`flex-shrink-0 w-11 h-11 p-1 rounded-xl border transition-all cursor-pointer ${
                           isPicked
                             ? 'bg-red-500/10 border-[#e50914] ring-2 ring-[#e50914]/40 scale-105'
                             : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 opacity-70 hover:opacity-100'
@@ -100,6 +100,7 @@ export function AuthModal() {
               />
             </>
           )}
+
           <input
             type="email"
             required
@@ -108,6 +109,7 @@ export function AuthModal() {
             placeholder="Email"
             className="w-full h-10 px-3 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600"
           />
+
           <input
             type="password"
             required
@@ -117,11 +119,13 @@ export function AuthModal() {
             placeholder="Mật khẩu"
             className="w-full h-10 px-3 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600"
           />
+
           {message && <p className="text-xs text-rose-400">{message}</p>}
+
           <button
             type="submit"
             disabled={submitting}
-            className="w-full h-10 rounded-lg bg-[#e50914] hover:bg-red-700 text-sm font-semibold text-white transition-colors disabled:opacity-50"
+            className="w-full h-10 rounded-lg bg-[#e50914] hover:bg-red-700 text-sm font-semibold text-white transition-colors disabled:opacity-50 cursor-pointer"
           >
             {mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}
           </button>
@@ -132,7 +136,7 @@ export function AuthModal() {
             setMode(mode === 'login' ? 'register' : 'login');
             setMessage(null);
           }}
-          className="w-full text-xs text-zinc-400 hover:text-white"
+          className="w-full text-xs text-zinc-400 hover:text-white cursor-pointer"
         >
           {mode === 'login' ? 'Chưa có tài khoản? Đăng ký' : 'Đã có tài khoản? Đăng nhập'}
         </button>
