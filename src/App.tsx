@@ -11,6 +11,9 @@ import { SearchPage } from './pages/SearchPage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { getLatestMovies } from './api/client';
+import { AuthProvider } from './context/AuthContext';
+import { FavoritesProvider } from './context/FavoritesContext';
+import { AuthModal } from './components/auth/AuthModal';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -48,7 +51,7 @@ function AppLayout() {
       {!isHomePage && <Navbar />}
 
       {/* 3. Main Content with responsive left padding for SidebarDock */}
-      <main className={`flex-1 sm:pl-16 md:pl-20 ${!isHomePage ? 'pt-20 sm:pt-24' : ''}`}>
+      <main className={`flex-1 sm:pl-16 md:pl-20 ${!isHomePage ? 'pt-20 sm:pt-16' : ''}`}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/danh-sach/:slug" element={<CategoryPage />} />
@@ -78,8 +81,13 @@ function AppLayout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <AppLayout />
+      <AuthProvider>
+        <FavoritesProvider>
+          <ScrollToTop />
+          <AppLayout />
+          <AuthModal />
+        </FavoritesProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

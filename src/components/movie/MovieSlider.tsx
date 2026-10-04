@@ -4,14 +4,15 @@ import type { MovieItem } from '../../types/movie';
 import { MovieCard } from './MovieCard';
 
 interface MovieSliderProps {
-  title: string;
+  title: React.ReactNode;
+  headerRight?: React.ReactNode;
   subtitle?: string;
   viewAllLink?: string;
   icon?: React.ReactNode;
   movies: MovieItem[];
 }
 
-export function MovieSlider({ title, movies }: MovieSliderProps) {
+export function MovieSlider({ title, headerRight, movies }: MovieSliderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -45,10 +46,19 @@ export function MovieSlider({ title, movies }: MovieSliderProps) {
 
   return (
     <section className="relative group/slider select-none">
-      {/* Title */}
-      <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-3 sm:mb-4">
-        {title}
-      </h2>
+      {/* Header with Title and optional right action */}
+      <div className="flex items-center justify-between gap-3 mb-3 sm:mb-4">
+        <div className="flex items-center gap-3">
+          {typeof title === 'string' ? (
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              {title}
+            </h2>
+          ) : (
+            title
+          )}
+        </div>
+        {headerRight && <div>{headerRight}</div>}
+      </div>
 
       {/* Relative container for cards & overlay buttons */}
       <div className="relative">

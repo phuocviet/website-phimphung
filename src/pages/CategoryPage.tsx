@@ -121,7 +121,7 @@ export function CategoryPage() {
   };
 
   return (
-    <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="pt-4 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
         <div className="flex items-center gap-3">
@@ -206,7 +206,7 @@ export function CategoryPage() {
 
       {/* Main Content Area */}
       {loading ? (
-        <MovieGridSkeleton count={12} />
+        <MovieGridSkeleton count={10} />
       ) : error ? (
         <div className="py-20 text-center text-zinc-400 space-y-3">
           <p className="text-base font-medium">{error}</p>
@@ -219,6 +219,8 @@ export function CategoryPage() {
             <Pagination
               currentPage={paginate.current_page}
               totalPages={paginate.total_page}
+              totalItems={paginate.total_items}
+              itemsPerPage={paginate.items_per_page || movies.length}
               onPageChange={handlePageChange}
             />
           )}

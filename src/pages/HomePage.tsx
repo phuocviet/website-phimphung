@@ -3,6 +3,8 @@ import { getLatestMovies } from '../api/client';
 import type { MovieItem } from '../types/movie';
 import { HeroBanner } from '../components/movie/HeroBanner';
 import { MovieSlider } from '../components/movie/MovieSlider';
+import { SavedMoviesSection } from '../components/movie/SavedMoviesSection';
+import { WatchingBubbles } from '../components/movie/WatchingBubbles';
 import { LoadingSpinner } from '../components/common/Loading';
 
 export function HomePage() {
@@ -76,6 +78,10 @@ export function HomePage() {
 
       {/* Movie Horizontal Carousels */}
       <div className="px-4 sm:px-8 lg:px-12 -mt-4 sm:-mt-8 md:-mt-12 relative z-20 pb-20 sm:pb-16 space-y-8 sm:space-y-10">
+        {/* Row 0: Personalized saved movies (Supabase, per user) + what others are watching */}
+        <SavedMoviesSection />
+        <WatchingBubbles />
+
         {/* Row 1: New this week */}
         <MovieSlider title="New this week" movies={newThisWeek} />
 

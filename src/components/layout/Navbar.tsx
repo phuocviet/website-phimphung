@@ -72,9 +72,9 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between sm:justify-end gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
+          <Link to="/" className="flex sm:hidden items-center gap-2 group flex-shrink-0">
             <div className="w-9 h-9 rounded-xl bg-[#e50914] flex items-center justify-center shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
               <Film className="w-5 h-5 text-white" />
             </div>
@@ -91,7 +91,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden">
             <Link
               to="/"
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
@@ -260,7 +260,7 @@ export function Navbar() {
             <Link
               to="/yeu-thich"
               title="Phim yêu thích"
-              className="relative p-2 sm:p-2.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-[#e50914] transition-colors"
+              className="relative sm:hidden p-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-[#e50914] transition-colors"
             >
               <Heart className="w-4 h-4" />
               {favorites.length > 0 && (
@@ -274,7 +274,7 @@ export function Navbar() {
             <Link
               to="/lich-su"
               title="Lịch sử xem phim"
-              className="p-2 sm:p-2.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-[#e50914] transition-colors"
+              className="sm:hidden p-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 hover:text-[#e50914] transition-colors"
             >
               <History className="w-4 h-4" />
             </Link>
@@ -282,7 +282,7 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white lg:hidden"
+              className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white sm:hidden"
               aria-label="Mở menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

@@ -102,7 +102,7 @@ export function SearchPage() {
   };
 
   return (
-    <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="pt-4 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       {/* Search Header */}
       <div className="max-w-2xl mx-auto text-center space-y-4">
         <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">

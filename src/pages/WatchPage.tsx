@@ -17,12 +17,15 @@ import { LoadingSpinner } from '../components/common/Loading';
 import { Badge } from '../components/common/Badge';
 import { useHistory } from '../hooks/useHistory';
 import { useFavorites } from '../hooks/useFavorites';
+import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
 
 export function WatchPage() {
   const { slug, episodeSlug } = useParams<{ slug: string; episodeSlug?: string }>();
   const navigate = useNavigate();
   const { saveWatchHistory } = useHistory();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { user } = useAuth();
 
   const [movie, setMovie] = useState<MovieDetail | null>(null);
   const [currentServerIndex, setCurrentServerIndex] = useState(0);
@@ -104,6 +107,27 @@ export function WatchPage() {
       });
     }
   }, [movie, currentEpisode, saveWatchHistory]);
+
+  // Share "currently watching" (public to other users) for signed-in users
+  const userId = user?.id;
+  const username =
+    (user?.user_metadata?.username as string | undefined)?.trim() || user?.email?.split('@')[0];
+  useEffect(() => {
+    if (!supabase || !userId || !username || !movie) return;
+    supabase
+      .from('user_activity')
+      .upsert({
+        user_id: userId,
+        username,
+        movie_slug: movie.slug,
+        movie_name: movie.name,
+        poster_url: movie.poster_url,
+        updated_at: new Date().toISOString(),
+      })
+      .then(({ error }) => {
+        if (error) console.error('Failed to publish activity', error);
+      });
+  }, [userId, username, movie]);
 
   const handleSelectEpisode = (serverIndex: number, episode: EpisodeItem) => {
     setCurrentServerIndex(serverIndex);
