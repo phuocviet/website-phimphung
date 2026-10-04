@@ -1,16 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { MovieItem } from '../../types/movie';
+import { useAuth } from '../../context/AuthContext';
 
 interface HeroBannerProps {
   movies: MovieItem[];
 }
 
 export function HeroBanner({ movies }: HeroBannerProps) {
+  const { user } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isDissolving, setIsDissolving] = useState(false);
 
   const featured = movies.slice(0, 6);
+
+  const username =
+    (user?.user_metadata?.username as string | undefined)?.trim() ||
+    user?.email?.split('@')[0];
+  const initialLetter = username ? username.charAt(0).toUpperCase() : 'P';
 
   useEffect(() => {
     if (isPaused || featured.length <= 1) return;
@@ -19,6 +27,12 @@ export function HeroBanner({ movies }: HeroBannerProps) {
     }, 7000);
     return () => clearInterval(timer);
   }, [featured.length, isPaused]);
+
+  useEffect(() => {
+    setIsDissolving(true);
+    const timeout = setTimeout(() => setIsDissolving(false), 850);
+    return () => clearTimeout(timeout);
+  }, [currentIndex]);
 
   if (!featured.length) return null;
 
@@ -34,14 +48,13 @@ export function HeroBanner({ movies }: HeroBannerProps) {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background Backdrop Image */}
-      <div className="absolute inset-0">
+      {/* Background Backdrop Image with 3D Cube Enter Animation */}
+      <div key={`bg-${current.slug}`} className="absolute inset-0 cube-scene-enter">
         <img
           src={displayImage}
           alt={current.name}
-          key={current.slug}
           style={{ objectPosition: 'right top' }}
-          className="w-full h-full object-cover transition-opacity duration-700 filter brightness-[0.85] contrast-[1.05]"
+          className="w-full h-full object-cover filter brightness-[0.85] contrast-[1.05]"
         />
 
         {/* Cinematic gradient overlays to blend into pure black */}
@@ -50,13 +63,36 @@ export function HeroBanner({ movies }: HeroBannerProps) {
         <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/70 to-transparent" />
       </div>
 
+      {/* Futuristic Cube Dissolve Matrix Overlay */}
+      {isDissolving && (
+        <div className="absolute inset-0 pointer-events-none z-30 grid grid-cols-6 sm:grid-cols-8 grid-rows-4 sm:grid-rows-5 gap-2.5 sm:gap-3 p-3 sm:p-4 overflow-hidden">
+          {Array.from({ length: 40 }).map((_, i) => {
+            const col = i % 8;
+            const row = Math.floor(i / 8);
+            const delay = (col * 0.045 + row * 0.05).toFixed(2);
+            return (
+              <div
+                key={i}
+                className="cube-voxel rounded-xl border border-[#e50914]/50 bg-gradient-to-br from-red-600/30 via-zinc-950/40 to-cyan-500/20 backdrop-blur-[2px]"
+                style={{ animationDelay: `${delay}s` }}
+              />
+            );
+          })}
+          {/* Futuristic laser scanbeam */}
+          <div className="absolute inset-x-0 h-24 bg-gradient-to-b from-transparent via-[#e50914]/30 to-transparent cyber-scan-line pointer-events-none" />
+        </div>
+      )}
+
       {/* Content Container (Money Heist style layout) */}
-      <div className="relative max-w-7xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex flex-col justify-center pt-8 pb-12 z-10">
+      <div
+        key={`content-${current.slug}`}
+        className="relative max-w-7xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex flex-col justify-center pt-8 pb-12 z-10 cube-scene-enter"
+      >
         <div className="max-w-2xl space-y-3.5">
-          {/* Netflix-style Series Badge */}
+          {/* User Initial Badge (e.g. "P FILM" or "P SERIES", replaces "N FILM" / "N SERIES") */}
           <div className="flex items-center gap-2">
-            <span className="text-[#e50914] font-black text-2xl sm:text-3xl tracking-tighter leading-none select-none">
-              N
+            <span className="text-[#e50914] font-black text-2xl sm:text-3xl tracking-tighter leading-none select-none drop-shadow-[0_0_12px_rgba(229,9,20,0.6)]">
+              {initialLetter}
             </span>
             <span className="text-[11px] sm:text-xs font-bold tracking-[0.3em] text-zinc-300 uppercase">
               {current.total_episodes && current.total_episodes > 1 ? 'SERIES' : 'FILM'}
